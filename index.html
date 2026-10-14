@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8ff">
+  <meta name="description" content="ASCII Finance and Audit portal for financial records and forms.">
+  <title>Finance &amp; Audit | ASCII</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --blue: #1769f5;
+      --blue-deep: #1455c7;
+      --blue-soft: #eaf1ff;
+      --blue-pale: #f3f7ff;
+      --ink: #152443;
+      --muted: #687791;
+      --paper: #ffffff;
+      --page: #f6f8ff;
+      --gutter: clamp(16px, 3vw, 48px);
+      --section-space: clamp(34px, 4.5vw, 60px);
+      --font: "Onest", "Segoe UI", Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      width: 100%;
+      scroll-behavior: smooth;
+      scroll-padding-top: 18px;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1920px;
+      min-width: 0;
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+
+    main, header, footer, section, .forms-grid, .form-card { min-width: 0; }
+
+    .brand-art { width: 100%; margin-inline: auto; }
+
+    .brand-art img {
+      width: 100%;
+      height: auto;
+      margin-inline: auto;
+      object-fit: contain;
+    }
+
+    .header-art, .footer-art { overflow: hidden; }
+    .site-header { padding-top: clamp(8px, 1.4vw, 20px); }
+
+    /* Main introduction and ledger share one row on desktop. */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr);
+      align-items: center;
+      gap: clamp(26px, 5vw, 78px);
+      padding: clamp(34px, 5vw, 72px) clamp(0px, 1vw, 14px) clamp(42px, 5vw, 66px);
+    }
+
+    .intro {
+      min-width: 0;
+      padding: 0;
+      animation: rise-in .72s cubic-bezier(.2, .75, .25, 1) both;
+    }
+
+    h1 {
+      max-width: 13ch;
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: clamp(38px, 5.1vw, 72px);
+      font-weight: 800;
+      line-height: .99;
+      letter-spacing: -.065em;
+      text-wrap: balance;
+    }
+
+    .intro-description {
+      max-width: 52ch;
+      margin: clamp(16px, 1.8vw, 22px) 0 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.12vw, 17px);
+      line-height: 1.75;
+    }
+
+    .ledger-section {
+      margin: 0;
+      animation: rise-in .78s .08s cubic-bezier(.2, .75, .25, 1) both;
+    }
+
+    .ledger-button {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      min-height: clamp(235px, 22vw, 310px);
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 12px;
+      padding: clamp(26px, 3.2vw, 46px);
+      overflow: hidden;
+      border: 0;
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: 0 10px 34px rgba(40, 75, 145, .075);
+      color: var(--ink);
+      text-align: left;
+      text-decoration: none;
+      transition: transform .28s ease, box-shadow .28s ease, background-color .28s ease;
+    }
+
+    .ledger-button::after {
+      position: absolute;
+      z-index: -1;
+      top: -70px;
+      right: -58px;
+      width: clamp(145px, 17vw, 235px);
+      aspect-ratio: 1;
+      border-radius: 42% 58% 57% 43% / 45% 42% 58% 55%;
+      background: linear-gradient(145deg, #e3ecff 2%, #f5f8ff 82%);
+      content: "";
+      transform: rotate(14deg);
+      transition: transform .5s cubic-bezier(.2, .75, .25, 1);
+    }
+
+    .ledger-button:hover {
+      transform: translateY(-4px);
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(40, 75, 145, .12);
+    }
+
+    .ledger-button:hover::after { transform: rotate(28deg) scale(1.07); }
+
+    .ledger-kicker {
+      margin: 0 0 1px;
+      color: var(--blue-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      text-transform: lowercase;
+    }
+
+    .ledger-title {
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: clamp(27px, 2.8vw, 38px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -.055em;
+    }
+
+    .ledger-description {
+      max-width: 34ch;
+      color: var(--muted);
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.7;
+    }
+
+    .ledger-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 8px;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      transition: background-color .22s ease, gap .22s ease, transform .22s ease;
+    }
+
+    .ledger-button:hover .ledger-action {
+      gap: 13px;
+      background: var(--blue-deep);
+    }
+
+    .ledger-action span, .form-link-label span { display: inline-block; transition: transform .22s ease; }
+    .ledger-button:hover .ledger-action span, .form-card:hover .form-link-label span { transform: translate(2px, -2px); }
+
+    .content-section { margin: 0 0 var(--section-space); }
+
+    .section-header {
+      margin-bottom: clamp(18px, 2.2vw, 28px);
+      text-align: center;
+      animation: rise-in .7s .13s cubic-bezier(.2, .75, .25, 1) both;
+    }
+
+    .section-kicker {
+      margin: 0 0 8px;
+      color: var(--blue-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      text-transform: lowercase;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.055em;
+      text-wrap: balance;
+    }
+
+    .section-description {
+      width: min(100%, 620px);
+      margin: 10px auto 0;
+      color: var(--muted);
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.7;
+    }
+
+    .forms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 285px), 1fr));
+      align-items: stretch;
+      gap: clamp(14px, 1.7vw, 24px);
+      width: 100%;
+    }
+
+    .form-card {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      flex-direction: column;
+      overflow: hidden;
+      border: 0;
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: 0 8px 28px rgba(40, 75, 145, .06);
+      text-align: center;
+      text-decoration: none;
+      opacity: 0;
+      animation: rise-in .68s cubic-bezier(.2, .75, .25, 1) forwards;
+      transition: transform .26s ease, box-shadow .26s ease;
+    }
+
+    .form-card:nth-child(1) { animation-delay: .12s; }
+    .form-card:nth-child(2) { animation-delay: .2s; }
+    .form-card:nth-child(3) { animation-delay: .28s; }
+
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 36px rgba(40, 75, 145, .12);
+    }
+
+    .form-art {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: clamp(130px, 14vw, 190px);
+      padding: clamp(12px, 1.6vw, 22px);
+      overflow: hidden;
+      background: var(--blue-pale);
+    }
+
+    .form-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      transition: transform .38s cubic-bezier(.2, .75, .25, 1);
+    }
+
+    .form-card:hover .form-art img { transform: scale(1.045); }
+
+    .form-details {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(17px, 1.8vw, 24px) clamp(12px, 1.3vw, 18px);
+      text-align: center;
+    }
+
+    .form-number {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      width: 31px;
+      height: 31px;
+      margin-bottom: 9px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+      font-size: 11px;
+      font-weight: 800;
+      transition: transform .25s ease, background-color .25s ease, color .25s ease;
+    }
+
+    .form-card:hover .form-number {
+      transform: rotate(-5deg) scale(1.07);
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .form-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(16px, 1.25vw, 19px);
+      font-weight: 750;
+      line-height: 1.35;
+      letter-spacing: -.025em;
+      overflow-wrap: anywhere;
+    }
+
+    .form-description {
+      max-width: 38ch;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: clamp(12px, .9vw, 14px);
+      line-height: 1.65;
+    }
+
+    .form-link-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 14px;
+      color: var(--blue-deep);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      transition: gap .2s ease;
+    }
+
+    .form-card:hover .form-link-label { gap: 9px; }
+
+    .site-footer {
+      margin-top: clamp(28px, 4vw, 52px);
+      padding: clamp(18px, 2vw, 28px) 0 clamp(22px, 3vw, 36px);
+      background: transparent;
+    }
+
+    .footer-caption {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .footer-caption strong { color: var(--ink); font-weight: 750; }
+
+    a:focus-visible { outline: 3px solid #78aaff; outline-offset: 4px; }
+
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        padding: clamp(30px, 6vw, 46px) 0 40px;
+      }
+
+      .intro { text-align: center; }
+      h1 {
+        max-width: 100%;
+        font-size: clamp(38px, 8vw, 56px);
+        text-align: center;
+      }
+      .intro-description { max-width: 54ch; margin-inline: auto; }
+      .ledger-button { min-height: 0; padding: 28px; }
+      .ledger-title, .ledger-description { max-width: 100%; }
+    }
+
+    @media (max-width: 520px) {
+      :root { --gutter: 12px; --section-space: 34px; }
+      .hero-grid { gap: 20px; padding-top: 28px; }
+      .forms-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .form-art { height: 138px; }
+      .form-details { padding: 16px 12px 18px; }
+      .form-number { margin-bottom: 7px; }
+      .form-link-label { margin-top: 11px; }
+      .site-footer { margin-top: 30px; }
+      .ledger-button { padding: 24px; border-radius: 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .form-card { opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand-art header-art">
+        <img src="./images/header.png" alt="ASCII Finance and Audit header">
+      </div>
+    </header>
+
+    <main>
+      <div class="hero-grid">
+        <section class="intro" aria-labelledby="page-title">
+          <h1 id="page-title">Finance Management</h1>
+          <p class="intro-description">
+            The central hub for ASCII's financial records, incoming funds,
+            expense reporting, and funding requests.
+          </p>
+        </section>
+
+        <section class="ledger-section" aria-label="Master Ledger">
+          <a
+            class="ledger-button"
+            href="https://docs.google.com/spreadsheets/d/1lIBvDM2veLGcdhbgpunrEv9CYzf-Yol2zkjKs4wz1i0/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Master Ledger spreadsheet"
+          >
+            <span class="ledger-kicker">financial records</span>
+            <span class="ledger-title">Master Ledger</span>
+            <span class="ledger-description">
+              Access the main financial spreadsheet and records.
+            </span>
+            <span class="ledger-action">
+              Open Spreadsheet <span aria-hidden="true">↗</span>
+            </span>
+          </a>
+        </section>
+      </div>
+
+      <section class="content-section" aria-labelledby="forms-heading">
+        <div class="section-header">
+          <p class="section-kicker">everyday transactions</p>
+          <h2 class="section-title" id="forms-heading">Financial Forms</h2>
+          <p class="section-description">
+            Choose a form to record a transaction or submit a request.
+          </p>
+        </div>
+
+        <div class="forms-grid">
+          <a
+            class="form-card"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScbztowq2SH9lbTAOuzneT1GvJn6dyMwUldIENjwBpFDmF4VA/viewform?usp=header"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Cash Inflow form"
+          >
+            <div class="form-art">
+              <img src="./images/cash-inflow.png" alt="Cash Inflow">
+            </div>
+            <div class="form-details">
+              <span class="form-number">01</span>
+              <h3 class="form-title">Cash Inflow</h3>
+              <p class="form-description">Record incoming funds and financial receipts.</p>
+              <span class="form-link-label">Open Form <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+
+          <a
+            class="form-card"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSf-hhK2r4bvLZ9WY7OxqjUlAc05VkpQeasJtO8azcIceKLOYw/viewform?usp=header"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Expense Form"
+          >
+            <div class="form-art">
+              <img src="./images/expense-form.png" alt="Expense Form">
+            </div>
+            <div class="form-details">
+              <span class="form-number">02</span>
+              <h3 class="form-title">Expense Form</h3>
+              <p class="form-description">Document expenditures and outgoing payments.</p>
+              <span class="form-link-label">Open Form <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+
+          <a
+            class="form-card"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSepTzhGsME34Y0Ri8lyRt2fkyiPmG9P8muzev2cK7mBN_fftA/viewform?usp=header"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Funds Request form"
+          >
+            <div class="form-art">
+              <img src="./images/funds-request.png" alt="Funds Request">
+            </div>
+            <div class="form-details">
+              <span class="form-number">03</span>
+              <h3 class="form-title">Funds Request</h3>
+              <p class="form-description">Submit a request for required funding.</p>
+              <span class="form-link-label">Open Form <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="brand-art footer-art">
+        <img src="./images/footer.png" alt="ASCII Team Finance and Audit footer">
+      </div>
+      <p class="footer-caption">
+        <strong>ASCII · Finance &amp; Audit</strong><br>
+        Supporting organized financial records and transparency.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
